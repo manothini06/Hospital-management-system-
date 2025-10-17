@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  web:
+    build: ./src/server
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=mongodb://mongo:27017/hospital_management
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  client:
+    build: ./src/client
+    ports:
+      - "3001:3000"
+    depends_on:
+      - web
+
+volumes:
+  mongo_data:
